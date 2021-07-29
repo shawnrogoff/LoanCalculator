@@ -80,7 +80,18 @@ function loanCalculations(loanAmount, rate, months){
 }
 
 // Display results
-function displayResults(resultsHTML){
-    
+function displayResults(resultsHTML){   
     document.getElementById("results").innerHTML = resultsHTML;
+}
+
+// Reset page
+function resetPage(){
+    loanAmount = document.getElementById("loanAmountInput").value = "";
+    months = document.getElementById("totalMonthsInput").value = "";
+    rate = document.getElementById("rateInput").value = "";
+    document.getElementById("monthPaymentsOutput").innerHTML = "";
+    document.getElementById("totalPrincipalOutput").innerHTML = "";
+    document.getElementById("totalInterestOutput").innerHTML = "";
+    document.getElementById("totalCostOutput").innerHTML = "";
+    document.getElementById("results").innerHTML = "";
 }
