@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>App Name: A Coding Project By Shawn Rogoff</title>
+    <title>Loan Calculator: A Coding Project By Shawn Rogoff</title>
     <link rel="shortcut icon" type="image/jpg" href="/img/ShawnRogoffFavicon2.ico"/>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -30,7 +30,7 @@
     <!-- Nav Section -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand logoFont"><img src="/img/ShawnRogoffMark2Light.png" class="d-inline-block align-text-top" width="30" height="24"> App Name</a>
+            <a class="navbar-brand logoFont"><img src="/img/ShawnRogoffMark2Light.png" class="d-inline-block align-text-top" width="30" height="24"> Loan Calculator</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -47,7 +47,7 @@
                         <a class="nav-link active" aria-current="page" href="code.html">The Code</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="#">Git Repo</a>
+                        <a class="nav-link" target="_blank" href="https://github.com/shawnrogoff/LoanCalculator">Git Repo</a>
                         <!-- put github link in the above href -->
                     </li>
                     <li class="nav-item">
@@ -62,24 +62,131 @@
     <!-- Main Section -->
     <main class="flex-shrink-0">
         <div class="container px-5 py-5 mt-5">
-            <h2 class="border-1 border-bottom border-dark">The Code for APP NAME.</h2>
+            <h2 class="border-1 border-bottom border-dark">The Code for Loan Calculator.</h2>
             <div class="row row-cols-1 row-cols-lg-2">
                 <!-- Code Side -->
                 <div class="col-lg-8">
                     <pre class="line-numbers"><code class="language-javascript">
                         <!-- Put valid javascript here -->
-                        // Call Hello World
-                        function HelloWorld(){
-                            alert("Hello World!");
+                        // Get values from page
+                        function getValues(){
+                            let loanAmount = document.getElementById("loanAmountInput").value;
+                            let months = document.getElementById("totalMonthsInput").value;
+                            let rate = document.getElementById("rateInput").value;
+
+                            if (loanAmount == ""){
+                                loanAmount = parseFloat(15000);
+                            } else {
+                                loanAmount = parseFloat(loanAmount);
+                            }
+
+                            if (months == ""){
+                                months = parseFloat(60);
+                            } else {
+                                months = parseFloat(months);
+                            }
+
+                            if (rate == ""){
+                                rate = parseFloat(3);
+                            } else {
+                                rate = parseFloat(rate);
+                            }
+                            
+                            // do loan calculations
+                            let resultsHTML = loanCalculations(loanAmount, rate, months);
+
+                            // display the html to screen
+                            displayResults(resultsHTML);
+                        }
+
+                        // Calculations
+                        function loanCalculations(loanAmount, rate, months){
+                            let totalInterest = 0;
+                            let balance = loanAmount;
+                            let interestPayment = 0;
+                            let principalPayment;
+                        
+                            // Calculate the total monthly payment
+                            let monthExponent = -Math.abs(months);
+                            let monthlyPayment = (loanAmount * (rate/1200)) / (1-(1+(rate/1200))**(monthExponent));
+                            monthlyPayment = parseFloat(monthlyPayment);
+                            
+                            let html = "";
+                            
+                            for (let i = 1; i <= months; i++){
+                                let month = i;
+                                interestPayment = parseFloat(balance*(rate/1200));
+                                principalPayment = parseFloat(monthlyPayment - (balance * (rate/1200)));
+                                totalInterest = parseFloat((totalInterest + interestPayment));
+                                totalInterest = parseFloat(totalInterest);
+                                balance -= principalPayment;
+                                balance = Math.abs(parseFloat(balance));
+
+                                html += `<tr><td>${month}</td><td>${monthlyPayment.toFixed(2)}</td><td>${principalPayment.toFixed(2)}</td><td>${interestPayment.toFixed(2)}</td><td>${totalInterest.toFixed(2)}</td><td>${balance.toFixed(2)}</td></tr>`
+                            }
+                            
+                            let totalCost = loanAmount + totalInterest;
+
+                            // display calculated variables to proper positions while inside function
+                            // use the .toLocaleString to convert to USD format 
+                            document.getElementById("monthPaymentsOutput").innerHTML = monthlyPayment.toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                            });
+                            document.getElementById("totalPrincipalOutput").innerHTML = loanAmount.toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                            });
+                            document.getElementById("totalInterestOutput").innerHTML = totalInterest.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            });
+                            document.getElementById("totalCostOutput").innerHTML = totalCost.toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                                });
+
+                            return html;
+                        }
+
+                        // Display results
+                        function displayResults(resultsHTML){   
+                            document.getElementById("results").innerHTML = resultsHTML;
+                        }
+
+                        // Reset page
+                        function resetPage(){
+                            loanAmount = document.getElementById("loanAmountInput").value = "";
+                            months = document.getElementById("totalMonthsInput").value = "";
+                            rate = document.getElementById("rateInput").value = "";
+                            document.getElementById("monthPaymentsOutput").innerHTML = "";
+                            document.getElementById("totalPrincipalOutput").innerHTML = "";
+                            document.getElementById("totalInterestOutput").innerHTML = "";
+                            document.getElementById("totalCostOutput").innerHTML = "";
+                            document.getElementById("results").innerHTML = "";
                         }
                     </code>
                     </pre>
                 </div>
                 <!-- Description Side -->
                 <div class="col-lg-4">
-                    <p>The Code is structed in one function.</p>
-                    <h5>Hello World</h5>
-                    <p>Hellow World is a function that displays an alert with a message of "Hello World!"</p>
+                    <p class="pt-1">Here are some brief explanations of the functions used in this project.</p>
+                    <h5>getValues()</h5>
+                    <p>
+                        &emsp;This
+                    </p>
+                    <h5>loanCalculations()</h5>
+                    <p>
+                        &emsp;That
+                    </p>
+                    <h5>displayResults()</h5>
+                    <p>
+                        &emsp;Another
+                    </p>
+                    <h5>resetPage()</h5>
+                    <p>
+                        &emsp;Thing
+                    </p>
                 </div>
             </div>
         </div>
