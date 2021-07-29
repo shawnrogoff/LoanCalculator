@@ -173,19 +173,48 @@
                     <p class="pt-1">Here are some brief explanations of the functions used in this project.</p>
                     <h5>getValues()</h5>
                     <p>
-                        &emsp;This
+                        &emsp;This function kicks off the application. We first pull in the values entered into our 
+                        input fields. I added some if/then/else statements to see if the user entered their own values 
+                        or if they wanted to just use the placeholder values. If they don't enter anything themselves, then 
+                        we will just use the placeholders. Next, I pass those three parameters into our <i>loanCalculations( )</i> 
+                        function where most of the heavy lifting will occur. Finally, we send the resulting HTML string from 
+                        there, and pass it into our <i>displayResults( )</i> function so we can put the rest on the web page.
                     </p>
                     <h5>loanCalculations()</h5>
                     <p>
-                        &emsp;That
+                        &emsp;This is where most of the action occurs. We set up various variables we will need to generate the 
+                        table rows and output needed later. Some variables are set to known values, and some are set to 0 since 
+                        logically this is how they will start. Next, we calculate the monthly payment based on user input, and use the 
+                        built-in <i>>parseFloat( )</i> to ensure the variable's value is a float, and not a string. You will see this 
+                        multiple times later.
+                    </p>
+                    <p>
+                        &emsp;Next, we declare our html variable, and set it to an empty string. We will be adding to this string with 
+                        every pass through the coming for loop. This is how we build out our table for the results output. Inside 
+                        the for loop we set i = 1, and make sure it runs once for every month the user selected for the loan term. During 
+                        each pass through the loop we calculate a changing set of values based on simple formulas, and update the balance 
+                        and total interest before inserting those calculated values into a string representing a row in an HTML table. You'll 
+                        notice that we used the built-in <i>.toFixed(2)</i> on the monthly payment to display a rounded value to the user. We 
+                        are actually maintaining the precision stored in the monthlyPayment variable while displaying the rounded version. Rounding 
+                        prematurely will break the math of our application. You may also notice we use the <i>Math.abs</i> function on our balance. 
+                        What this does is transform the number to its absolute value; I use this to ensure the balance displays a positive value 
+                        when it hits $0.00.
+                    </p>
+                    <p>
+                        &emsp;Next, we calculate the total cost to the user based on the loan terms entered. We then have a section of 
+                        code that displays some of the variables we have calculated inside this function. We display them inside this function 
+                        due to function scope; the <i>displayResults( )</i> function can't access these variables since they are inside another 
+                        function. We set the inner HTML of our top results section to our variable values after we convert them to a USD format. 
+                        Finally, the new HTML string we created is returned.
                     </p>
                     <h5>displayResults()</h5>
                     <p>
-                        &emsp;Another
+                        &emsp;This function is extremely straight forward. We take our html string, and inject it into the results element to display 
+                        our dynamically generated table.
                     </p>
                     <h5>resetPage()</h5>
                     <p>
-                        &emsp;Thing
+                        &emsp; This function resets the page by setting all of the involved elements' inner HTML to an empty string.
                     </p>
                 </div>
             </div>
