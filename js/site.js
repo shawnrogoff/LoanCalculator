@@ -31,6 +31,9 @@ function getValues(){
 
 // Calculations
 function loanCalculations(loanAmount, rate, months){
+
+    let resultsObject = {};
+
     let totalInterest = 0;
     let balance = loanAmount;
     let interestPayment = 0;
@@ -59,29 +62,38 @@ function loanCalculations(loanAmount, rate, months){
 
     // display calculated variables to proper positions while inside function
     // use the .toLocaleString to convert to USD format 
-    document.getElementById("monthPaymentsOutput").innerHTML = monthlyPayment.toLocaleString('en-US', {
+    resultsObject.monthlyPayment = monthlyPayment.toLocaleString('en-US', {
         style: 'currency',
         currency: 'USD',
       });
-    document.getElementById("totalPrincipalOutput").innerHTML = loanAmount.toLocaleString('en-US', {
+
+    resultsObject.totalPrincipal = loanAmount.toLocaleString('en-US', {
         style: 'currency',
         currency: 'USD',
       });
-    document.getElementById("totalInterestOutput").innerHTML = totalInterest.toLocaleString('en-US', {
+    
+    resultsObject.totalInterest = totalInterest.toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
     });
-    document.getElementById("totalCostOutput").innerHTML = totalCost.toLocaleString('en-US', {
+
+    resultsObject.totalCost = totalCost.toLocaleString('en-US', {
         style: 'currency',
         currency: 'USD',
         });
 
-    return html;
+    resultsObject.html = html;
+
+    return resultsObject;
 }
 
 // Display results
-function displayResults(resultsHTML){   
-    document.getElementById("results").innerHTML = resultsHTML;
+function displayResults(resultsObject){
+    document.getElementById("monthPaymentsOutput").innerHTML =  resultsObject.monthlyPayment;
+    document.getElementById("totalPrincipalOutput").innerHTML = resultsObject.totalPrincipal;
+    document.getElementById("totalInterestOutput").innerHTML = resultsObject.totalInterest;
+    document.getElementById("totalCostOutput").innerHTML =  resultsObject.totalCost
+    document.getElementById("results").innerHTML = resultsObject.html;
 }
 
 // Reset page

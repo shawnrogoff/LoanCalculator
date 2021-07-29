@@ -101,6 +101,9 @@
 
                         // Calculations
                         function loanCalculations(loanAmount, rate, months){
+
+                            let resultsObject = {};
+
                             let totalInterest = 0;
                             let balance = loanAmount;
                             let interestPayment = 0;
@@ -129,29 +132,38 @@
 
                             // display calculated variables to proper positions while inside function
                             // use the .toLocaleString to convert to USD format 
-                            document.getElementById("monthPaymentsOutput").innerHTML = monthlyPayment.toLocaleString('en-US', {
+                            resultsObject.monthlyPayment = monthlyPayment.toLocaleString('en-US', {
                                 style: 'currency',
                                 currency: 'USD',
                             });
-                            document.getElementById("totalPrincipalOutput").innerHTML = loanAmount.toLocaleString('en-US', {
+
+                            resultsObject.totalPrincipal = loanAmount.toLocaleString('en-US', {
                                 style: 'currency',
                                 currency: 'USD',
                             });
-                            document.getElementById("totalInterestOutput").innerHTML = totalInterest.toLocaleString('en-US', {
+                            
+                            resultsObject.totalInterest = totalInterest.toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'USD',
                             });
-                            document.getElementById("totalCostOutput").innerHTML = totalCost.toLocaleString('en-US', {
+
+                            resultsObject.totalCost = totalCost.toLocaleString('en-US', {
                                 style: 'currency',
                                 currency: 'USD',
                                 });
 
-                            return html;
+                            resultsObject.html = html;
+
+                            return resultsObject;
                         }
 
                         // Display results
-                        function displayResults(resultsHTML){   
-                            document.getElementById("results").innerHTML = resultsHTML;
+                        function displayResults(resultsObject){
+                            document.getElementById("monthPaymentsOutput").innerHTML =  resultsObject.monthlyPayment;
+                            document.getElementById("totalPrincipalOutput").innerHTML = resultsObject.totalPrincipal;
+                            document.getElementById("totalInterestOutput").innerHTML = resultsObject.totalInterest;
+                            document.getElementById("totalCostOutput").innerHTML =  resultsObject.totalCost
+                            document.getElementById("results").innerHTML = resultsObject.html;
                         }
 
                         // Reset page
@@ -182,7 +194,8 @@
                     </p>
                     <h5>loanCalculations()</h5>
                     <p>
-                        &emsp;This is where most of the action occurs. We set up various variables we will need to generate the 
+                        &emsp;This is where most of the action occurs. First, we create a resultsObject to store all of our 
+                        results inside. We will return this later. Next, we set up various variables we will need to generate the 
                         table rows and output needed later. Some variables are set to known values, and some are set to 0 since 
                         logically this is how they will start. Next, we calculate the monthly payment based on user input, and use the 
                         built-in <i>>parseFloat( )</i> to ensure the variable's value is a float, and not a string. You will see this 
@@ -202,15 +215,13 @@
                     </p>
                     <p>
                         &emsp;Next, we calculate the total cost to the user based on the loan terms entered. We then have a section of 
-                        code that displays some of the variables we have calculated inside this function. We display them inside this function 
-                        due to function scope; the <i>displayResults( )</i> function can't access these variables since they are inside another 
-                        function. We set the inner HTML of our top results section to our variable values after we convert them to a USD format. 
-                        Finally, the new HTML string we created is returned.
+                        code that stores some of the variables we have calculated inside our resultsObject. Notice we converted the monetary values to a USD format. 
+                        Finally, the resultsObject is returned.
                     </p>
                     <h5>displayResults()</h5>
                     <p>
-                        &emsp;This function is extremely straight forward. We take our html string, and inject it into the results element to display 
-                        our dynamically generated table.
+                        &emsp;This function is extremely straight forward. We take our values inside the resultsObject, and inject them into the appropriate element to display 
+                        our results to the user.
                     </p>
                     <h5>resetPage()</h5>
                     <p>
