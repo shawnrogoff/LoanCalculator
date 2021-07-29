@@ -44,23 +44,43 @@ function loanCalculations(loanAmount, rate, months){
     let html = "";
     
     for (let i = 1; i <= months; i++){
-      let month = i;
-      interestPayment = parseFloat(balance*(rate/1200));
-      principalPayment = parseFloat(monthlyPayment - (balance * (rate/1200)));
-      totalInterest = parseFloat((totalInterest + interestPayment));
-      totalInterest = parseFloat(totalInterest);
-      balance -= principalPayment;
-      balance = parseFloat(balance);
-    
-      html += `<tr><td>${month}</td><td>${monthlyPayment}</td><td>${principalPayment.toFixed(2)}</td><td>${interestPayment.toFixed(2)}</td><td>${totalInterest.toFixed(2)}</td><td>${balance.toFixed(2)}</td></tr>`
+        let month = i;
+        interestPayment = parseFloat(balance*(rate/1200));
+        principalPayment = parseFloat(monthlyPayment - (balance * (rate/1200)));
+        totalInterest = parseFloat((totalInterest + interestPayment));
+        totalInterest = parseFloat(totalInterest);
+        balance -= principalPayment;
+        balance = Math.abs(parseFloat(balance));
+
+        html += `<tr><td>${month}</td><td>${monthlyPayment.toFixed(2)}</td><td>${principalPayment.toFixed(2)}</td><td>${interestPayment.toFixed(2)}</td><td>${totalInterest.toFixed(2)}</td><td>${balance.toFixed(2)}</td></tr>`
     }
     
     let totalCost = loanAmount + totalInterest;
+
+    // display calculated variables to proper positions while inside function
+    // use the .toLocaleString to convert to USD format 
+    document.getElementById("monthPaymentsOutput").innerHTML = monthlyPayment.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      });
+    document.getElementById("totalPrincipalOutput").innerHTML = loanAmount.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      });
+    document.getElementById("totalInterestOutput").innerHTML = totalInterest.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    });
+    document.getElementById("totalCostOutput").innerHTML = totalCost.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        });
 
     return html;
 }
 
 // Display results
 function displayResults(resultsHTML){
+    
     document.getElementById("results").innerHTML = resultsHTML;
 }
